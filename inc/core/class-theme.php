@@ -36,13 +36,16 @@ final class Theme {
 		( new Mode() )->register();
 		( new DynamicCss() )->register();
 		( new InContent() )->register();
+		( new Toc() )->register();
 		( new Newsletter() )->register();
 
 		( new \Kronos\Customizer\Customizer() )->register();
 		( new \Kronos\Lazyload\Lazyload() )->register();
 		( new \Kronos\Optimizer\Optimizer() )->register();
+		( new \Kronos\Optimizer\Watermark() )->register();
 		( new \Kronos\Schema\Manager() )->register();
 		( new \Kronos\Seo\Head() )->register();
+		( new \Kronos\Seo\Canonical() )->register();
 		( new \Kronos\Amp\Amp() )->register();
 		( new \Kronos\Widgets\Registrar() )->register();
 		( new \Kronos\Members\Members() )->register();

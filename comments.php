@@ -43,13 +43,29 @@ if ( post_password_required() ) {
 	<?php endif; ?>
 
 	<?php
-	comment_form( [
-		'class_form'         => 'kronos-comment-form',
-		'class_submit'       => 'kronos-button',
-		'title_reply'        => __( 'Yorum yaz', 'kronos' ),
-		'title_reply_before' => '<h3 id="reply-title" class="kronos-comment-form__title">',
-		'title_reply_after'  => '</h3>',
+	$kronos_cf_args = [
+		'class_form'           => 'kronos-comment-form',
+		'class_submit'         => 'kronos-button',
+		'title_reply'          => __( 'Yorum yaz', 'kronos' ),
+		'title_reply_before'   => '<h3 id="reply-title" class="kronos-comment-form__title screen-reader-text">',
+		'title_reply_after'    => '</h3>',
 		'comment_notes_before' => '',
-	] );
+	];
+	if ( comments_open() ) :
+		?>
+		<details class="kronos-commentform">
+			<summary class="kronos-commentform__head">
+				<span class="kronos-commentform__icon"><?php echo \Kronos\Core\Helpers::icon( 'comment' ); // phpcs:ignore ?></span>
+				<span class="kronos-commentform__label"><?php esc_html_e( 'Yorum Yaz', 'kronos' ); ?></span>
+				<span class="kronos-commentform__toggle" aria-hidden="true"><?php echo \Kronos\Core\Helpers::icon( 'plus' ); // phpcs:ignore ?></span>
+			</summary>
+			<div class="kronos-commentform__body">
+				<?php comment_form( $kronos_cf_args ); ?>
+			</div>
+		</details>
+		<?php
+	else :
+		comment_form( $kronos_cf_args );
+	endif;
 	?>
 </section>

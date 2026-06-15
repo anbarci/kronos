@@ -126,7 +126,7 @@ $kronos_socials = Options::social_links();
 </div>
 
 <?php
-if ( Options::bool( 'kronos_ticker' ) && ( is_home() || is_front_page() ) ) {
+if ( Options::bool( 'kronos_ticker' ) ) {
 	get_template_part( 'template-parts/ticker' );
 }
 ?>

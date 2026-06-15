@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
 class NavWalker extends \Walker_Nav_Menu {
 
 	public function start_lvl( &$output, $depth = 0, $args = null ) {
-		$output .= '<ul class="kronos-nav__sub" role="menu">';
+		$output .= '<ul class="kronos-nav__sub">';
 	}
 
 	public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
@@ -33,10 +33,6 @@ class NavWalker extends \Walker_Nav_Menu {
 				$attributes .= ' ' . $attr . '="' . esc_attr( $value ) . '"';
 			}
 		}
-		if ( $has_children ) {
-			$attributes .= ' aria-haspopup="true" aria-expanded="false"';
-		}
-
 		$title = apply_filters( 'the_title', $item->title, $item->ID );
 		$output .= '<a class="kronos-nav__link"' . $attributes . '>' . esc_html( $title ) . '</a>';
 	}

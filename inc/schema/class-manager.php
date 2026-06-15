@@ -105,22 +105,12 @@ class Manager {
 		if ( $forced && 'auto' !== $forced ) {
 			return $forced;
 		}
-		$id = get_the_ID();
-		if ( has_term( [ 'tarif', 'recipe', 'yemek' ], 'category', $id ) || has_tag( [ 'tarif', 'recipe' ], $id ) ) {
-			return 'Recipe';
-		}
-		if ( has_term( [ 'inceleme', 'review' ], 'category', $id ) ) {
-			return 'Review';
-		}
-		if ( has_term( [ 'rehber', 'nasil', 'how-to', 'howto' ], 'category', $id ) ) {
-			return 'HowTo';
-		}
 		return Mode::is_news() ? 'NewsArticle' : 'BlogPosting';
 	}
 
 	private function article(): array {
 		$id   = get_the_ID();
-		$img  = get_the_post_thumbnail_url( $id, 'kronos-hero' );
+		$img  = has_post_thumbnail( $id ) ? wp_get_attachment_image_src( get_post_thumbnail_id( $id ), 'kronos-hero' ) : false;
 
 		$data = [
 			'@type'            => $this->article_type(),
@@ -143,7 +133,12 @@ class Manager {
 			$data['description'] = wp_strip_all_tags( $desc );
 		}
 		if ( $img ) {
-			$data['image'] = [ $img ];
+			$data['image'] = [
+				'@type'  => 'ImageObject',
+				'url'    => $img[0],
+				'width'  => (int) $img[1],
+				'height' => (int) $img[2],
+			];
 		}
 		$cats = get_the_category( $id );
 		if ( ! empty( $cats ) ) {

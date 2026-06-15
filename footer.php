@@ -53,6 +53,8 @@ $kronos_socials     = \Kronos\Core\Options::social_links();
 	</div>
 </footer>
 
+<button type="button" class="kronos-totop" data-kronos-totop aria-label="<?php esc_attr_e( 'Yukarı çık', 'kronos' ); ?>"><?php echo \Kronos\Core\Helpers::icon( 'arrow-up' ); // phpcs:ignore ?></button>
+
 <?php wp_footer(); ?>
 </body>
 </html>

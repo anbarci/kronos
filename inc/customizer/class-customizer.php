@@ -166,6 +166,7 @@ class Customizer {
 			'kronos_lazyload'      => __( 'Lazy loading', 'kronos' ),
 			'kronos_amp_enable'    => __( 'Dahili AMP katmanı', 'kronos' ),
 			'kronos_schema_enable' => __( 'Otomatik Schema.org', 'kronos' ),
+			'kronos_toc_enable'    => __( 'İçindekiler (içerik tablosu)', 'kronos' ),
 		] as $id => $label ) {
 			$wp->add_setting( $id, [
 				'default'           => $defaults[ $id ],
@@ -187,6 +188,91 @@ class Customizer {
 			'label'       => __( 'Görsel kalitesi (JPEG/WebP)', 'kronos' ),
 			'description' => __( '1-100 arası. Düşük değer = küçük dosya. Önerilen 78-82. Yalnızca bundan sonra yüklenen/yeniden üretilen görselleri etkiler.', 'kronos' ),
 			'input_attrs' => [ 'min' => 1, 'max' => 100, 'step' => 1 ],
+		] );
+
+		$wp->add_section( 'kronos_watermark', [
+			'title' => __( 'Görsel Damga (Watermark)', 'kronos' ),
+			'panel' => 'kronos_panel',
+		] );
+		$wp->add_setting( 'kronos_watermark_enable', [
+			'default'           => $defaults['kronos_watermark_enable'],
+			'sanitize_callback' => 'wp_validate_boolean',
+		] );
+		$wp->add_control( 'kronos_watermark_enable', [
+			'type'        => 'checkbox',
+			'section'     => 'kronos_watermark',
+			'label'       => __( 'Yüklenen görsellere damga ekle', 'kronos' ),
+			'description' => __( 'Yalnızca bundan sonra yüklenen görselleri etkiler.', 'kronos' ),
+		] );
+		$wp->add_setting( 'kronos_watermark_type', [
+			'default'           => $defaults['kronos_watermark_type'],
+			'sanitize_callback' => [ $this, 'sanitize_wm_type' ],
+		] );
+		$wp->add_control( 'kronos_watermark_type', [
+			'type'    => 'radio',
+			'section' => 'kronos_watermark',
+			'label'   => __( 'Damga türü', 'kronos' ),
+			'choices' => [
+				'text' => __( 'Yazı', 'kronos' ),
+				'logo' => __( 'Logo (görsel)', 'kronos' ),
+			],
+		] );
+		$wp->add_setting( 'kronos_watermark_text', [
+			'default'           => $defaults['kronos_watermark_text'],
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
+		$wp->add_control( 'kronos_watermark_text', [
+			'type'        => 'text',
+			'section'     => 'kronos_watermark',
+			'label'       => __( 'Damga yazısı', 'kronos' ),
+			'description' => __( 'Boş bırakılırsa site adı kullanılır.', 'kronos' ),
+		] );
+		$wp->add_setting( 'kronos_watermark_logo', [
+			'default'           => $defaults['kronos_watermark_logo'],
+			'sanitize_callback' => 'absint',
+		] );
+		$wp->add_control( new \WP_Customize_Media_Control( $wp, 'kronos_watermark_logo', [
+			'section'     => 'kronos_watermark',
+			'label'       => __( 'Damga logosu', 'kronos' ),
+			'mime_type'   => 'image',
+			'description' => __( 'Şeffaf PNG önerilir.', 'kronos' ),
+		] ) );
+		$wp->add_setting( 'kronos_watermark_position', [
+			'default'           => $defaults['kronos_watermark_position'],
+			'sanitize_callback' => [ $this, 'sanitize_wm_position' ],
+		] );
+		$wp->add_control( 'kronos_watermark_position', [
+			'type'    => 'select',
+			'section' => 'kronos_watermark',
+			'label'   => __( 'Konum', 'kronos' ),
+			'choices' => [
+				'top-left'     => __( 'Sol üst', 'kronos' ),
+				'top-right'    => __( 'Sağ üst', 'kronos' ),
+				'bottom-left'  => __( 'Sol alt', 'kronos' ),
+				'bottom-right' => __( 'Sağ alt', 'kronos' ),
+				'center'       => __( 'Orta', 'kronos' ),
+			],
+		] );
+		$wp->add_setting( 'kronos_watermark_opacity', [
+			'default'           => $defaults['kronos_watermark_opacity'],
+			'sanitize_callback' => 'absint',
+		] );
+		$wp->add_control( 'kronos_watermark_opacity', [
+			'type'        => 'number',
+			'section'     => 'kronos_watermark',
+			'label'       => __( 'Opaklık (%)', 'kronos' ),
+			'input_attrs' => [ 'min' => 0, 'max' => 100, 'step' => 5 ],
+		] );
+		$wp->add_setting( 'kronos_watermark_size', [
+			'default'           => $defaults['kronos_watermark_size'],
+			'sanitize_callback' => 'absint',
+		] );
+		$wp->add_control( 'kronos_watermark_size', [
+			'type'        => 'number',
+			'section'     => 'kronos_watermark',
+			'label'       => __( 'Damga boyutu', 'kronos' ),
+			'description' => __( 'Yazı ve logo boyutunu ölçekler (varsayılan 18; logo için görsel genişliğinin %\'si).', 'kronos' ),
+			'input_attrs' => [ 'min' => 5, 'max' => 60, 'step' => 1 ],
 		] );
 
 		$wp->add_section( 'kronos_social', [
@@ -244,6 +330,14 @@ class Customizer {
 			return 82;
 		}
 		return min( $value, 100 );
+	}
+
+	public function sanitize_wm_type( $value ): string {
+		return in_array( $value, [ 'text', 'logo' ], true ) ? $value : 'text';
+	}
+
+	public function sanitize_wm_position( $value ): string {
+		return in_array( $value, [ 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'center' ], true ) ? $value : 'bottom-right';
 	}
 
 	public function preview_js(): void {
