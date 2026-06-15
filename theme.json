@@ -1,0 +1,85 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": true,
+		"layout": {
+			"contentSize": "800px",
+			"wideSize": "1280px"
+		},
+		"color": {
+			"defaultPalette": false,
+			"palette": [
+				{ "slug": "primary", "color": "#E11D48", "name": "Birincil" },
+				{ "slug": "primary-hover", "color": "#BE123C", "name": "Birincil Hover" },
+				{ "slug": "secondary", "color": "#1F2937", "name": "İkincil" },
+				{ "slug": "base", "color": "#F2F3F6", "name": "Zemin" },
+				{ "slug": "surface", "color": "#FFFFFF", "name": "Yüzey" },
+				{ "slug": "contrast", "color": "#1A1F2B", "name": "Metin" },
+				{ "slug": "muted", "color": "#8A92A1", "name": "Soluk" }
+			]
+		},
+		"typography": {
+			"fluid": true,
+			"fontFamilies": [
+				{
+					"slug": "heading",
+					"name": "Space Grotesk",
+					"fontFamily": "\"Space Grotesk\", system-ui, sans-serif",
+					"fontFace": [
+						{
+							"fontFamily": "Space Grotesk",
+							"fontWeight": "400 700",
+							"fontStyle": "normal",
+							"fontDisplay": "swap",
+							"src": [ "file:./assets/fonts/spacegrotesk-latin.woff2" ]
+						}
+					]
+				},
+				{
+					"slug": "body",
+					"name": "Inter",
+					"fontFamily": "\"Inter\", system-ui, sans-serif",
+					"fontFace": [
+						{
+							"fontFamily": "Inter",
+							"fontWeight": "400 700",
+							"fontStyle": "normal",
+							"fontDisplay": "swap",
+							"src": [ "file:./assets/fonts/inter-latin.woff2" ]
+						}
+					]
+				}
+			],
+			"fontSizes": [
+				{ "slug": "small", "size": "0.875rem", "name": "Küçük" },
+				{ "slug": "medium", "size": "1.125rem", "name": "Orta" },
+				{ "slug": "large", "size": "1.45rem", "name": "Büyük" },
+				{ "slug": "x-large", "size": "2rem", "name": "Çok Büyük" }
+			]
+		},
+		"spacing": {
+			"units": [ "px", "rem", "em", "%", "vw" ]
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "#F2F3F6",
+			"text": "#1A1F2B"
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--body)",
+			"lineHeight": "1.7"
+		},
+		"elements": {
+			"link": {
+				"color": { "text": "#E11D48" },
+				":hover": { "color": { "text": "#BE123C" } }
+			},
+			"h1": { "typography": { "fontFamily": "var(--wp--preset--font-family--heading)" } },
+			"h2": { "typography": { "fontFamily": "var(--wp--preset--font-family--heading)" } },
+			"h3": { "typography": { "fontFamily": "var(--wp--preset--font-family--heading)" } },
+			"h4": { "typography": { "fontFamily": "var(--wp--preset--font-family--heading)" } }
+		}
+	}
+}
