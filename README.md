@@ -4,9 +4,6 @@
 Native Customizer, dual-mode (blog/haber), otomatik schema, dahili AMP katmanı ve
 kapsamlı lazy loading hedefiyle geliştirilir.
 
-> Pars (Softinays) temasının **kopyası değildir**. Yalnızca aynı kategorideki
-> özellikleri özgün ve daha yalın kodla yeniden inşa eder.
-
 **Telif & İletişim:** Telif hakkı (c) 2026 [hazermedya.com](https://hazermedya.com) - Hikmet Anbarcı.
 Kod lisansı **GPL-2.0-or-later** (bkz. `license.txt`); "Kronos" adı, marka ve görsel tasarım
 hazermedya.com'a aittir. Haklar, lisanslama ve iş birliği için: **https://hazermedya.com**
