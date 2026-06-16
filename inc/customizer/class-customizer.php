@@ -157,6 +157,16 @@ class Customizer {
 			'label'       => __( 'Blok sırası', 'kronos' ),
 			'description' => __( 'Virgülle ayır: hero, story, trending, latest, categories, newsletter, ad', 'kronos' ),
 		] );
+		$wp->add_setting( 'kronos_section_cats', [
+			'default'           => $defaults['kronos_section_cats'],
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
+		$wp->add_control( 'kronos_section_cats', [
+			'type'        => 'text',
+			'section'     => 'kronos_home',
+			'label'       => __( '"Kategorilere Göz At" kategorileri', 'kronos' ),
+			'description' => __( 'Virgülle kategori slug\'ları (örn: gundem,teknoloji,spor). Boş = otomatik (en çok yazılı 4).', 'kronos' ),
+		] );
 
 		$wp->add_section( 'kronos_performance', [
 			'title' => __( 'Performans', 'kronos' ),

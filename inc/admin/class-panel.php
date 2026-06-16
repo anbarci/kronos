@@ -81,7 +81,21 @@ class Panel {
 				'label'  => __( 'Performans', 'kronos' ),
 				'fields' => [
 					'kronos_lazyload' => [ 'type' => 'checkbox', 'label' => __( 'Lazy loading', 'kronos' ), 'hint' => __( 'Görsel/iframe geç yükleme', 'kronos' ) ],
-					'kronos_ticker'   => [ 'type' => 'checkbox', 'label' => __( 'Manşet akış şeridi', 'kronos' ), 'hint' => __( 'Anasayfada kayan başlıklar (etiketsiz)', 'kronos' ) ],
+					'kronos_ticker'     => [ 'type' => 'checkbox', 'label' => __( 'Manşet akış şeridi', 'kronos' ), 'hint' => __( 'Anasayfada kayan başlıklar (etiketsiz)', 'kronos' ) ],
+					'kronos_toc_enable' => [ 'type' => 'checkbox', 'label' => __( 'İçindekiler (TOC)', 'kronos' ), 'hint' => __( 'Uzun yazılarda otomatik içerik tablosu', 'kronos' ) ],
+				],
+			],
+			'gorsel'     => [
+				'label'  => __( 'Görsel & Damga', 'kronos' ),
+				'fields' => [
+					'kronos_image_quality'      => [ 'type' => 'number', 'label' => __( 'Görsel kalitesi (JPEG/WebP)', 'kronos' ), 'desc' => __( '1-100. Düşük değer = küçük dosya. Sadece bundan sonra yüklenen görselleri etkiler.', 'kronos' ) ],
+					'kronos_watermark_enable'   => [ 'type' => 'checkbox', 'label' => __( 'Watermark / damga', 'kronos' ), 'hint' => __( 'Yüklenen görsellere yazı veya logo damgası ekle', 'kronos' ) ],
+					'kronos_watermark_type'     => [ 'type' => 'radio', 'label' => __( 'Damga türü', 'kronos' ), 'choices' => [ 'text' => __( 'Yazı', 'kronos' ), 'logo' => __( 'Logo (görsel)', 'kronos' ) ] ],
+					'kronos_watermark_text'     => [ 'type' => 'text', 'label' => __( 'Damga yazısı', 'kronos' ), 'desc' => __( 'Boş bırakılırsa site adı kullanılır.', 'kronos' ) ],
+					'kronos_watermark_logo'     => [ 'type' => 'media', 'label' => __( 'Damga logosu', 'kronos' ), 'desc' => __( 'Şeffaf PNG önerilir.', 'kronos' ) ],
+					'kronos_watermark_position' => [ 'type' => 'select', 'label' => __( 'Konum', 'kronos' ), 'choices' => [ 'top-left' => __( 'Sol üst', 'kronos' ), 'top-right' => __( 'Sağ üst', 'kronos' ), 'bottom-left' => __( 'Sol alt', 'kronos' ), 'bottom-right' => __( 'Sağ alt', 'kronos' ), 'center' => __( 'Orta', 'kronos' ) ] ],
+					'kronos_watermark_opacity'  => [ 'type' => 'number', 'label' => __( 'Opaklık (%)', 'kronos' ) ],
+					'kronos_watermark_size'     => [ 'type' => 'number', 'label' => __( 'Damga boyutu', 'kronos' ), 'desc' => __( 'Yazı ve logo boyutunu ölçekler (varsayılan 18).', 'kronos' ) ],
 				],
 			],
 			'sosyal'     => [
@@ -99,6 +113,7 @@ class Panel {
 				'fields' => [
 					'kronos_excerpt_length' => [ 'type' => 'number', 'label' => __( 'Özet kelime sayısı', 'kronos' ) ],
 					'kronos_home_blocks'    => [ 'type' => 'text', 'label' => __( 'Anasayfa blokları', 'kronos' ), 'desc' => __( 'Virgülle: manset, latest, trending, sections, categories, hero, story, newsletter', 'kronos' ) ],
+					'kronos_section_cats'   => [ 'type' => 'text', 'label' => __( '"Kategorilere Göz At" kategorileri', 'kronos' ), 'desc' => __( 'Virgülle kategori slug\'ları (örn: gundem,teknoloji,spor). Boş bırakılırsa otomatik (en çok yazılı 4 kategori).', 'kronos' ) ],
 					'kronos_footer_text'    => [ 'type' => 'textarea', 'label' => __( 'Footer telif metni', 'kronos' ) ],
 				],
 			],

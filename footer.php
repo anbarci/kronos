@@ -56,5 +56,6 @@ $kronos_socials     = \Kronos\Core\Options::social_links();
 <button type="button" class="kronos-totop" data-kronos-totop aria-label="<?php esc_attr_e( 'Yukarı çık', 'kronos' ); ?>"><?php echo \Kronos\Core\Helpers::icon( 'arrow-up' ); // phpcs:ignore ?></button>
 
 <?php wp_footer(); ?>
+<!-- Kronos teması - Telif (c) 2026 hazermedya.com (Hikmet Anbarcı). Haklar & iletişim: https://hazermedya.com -->
 </body>
 </html>

@@ -2,7 +2,18 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$kronos_cats = get_categories( [ 'orderby' => 'count', 'order' => 'DESC', 'number' => 4, 'hide_empty' => true ] );
+$kronos_section_cats = array_filter( array_map( 'trim', explode( ',', (string) \Kronos\Core\Options::get( 'kronos_section_cats' ) ) ) );
+if ( ! empty( $kronos_section_cats ) ) {
+	$kronos_cats = get_categories( [ 'slug' => $kronos_section_cats, 'hide_empty' => false ] );
+	usort(
+		$kronos_cats,
+		static function ( $a, $b ) use ( $kronos_section_cats ) {
+			return array_search( $a->slug, $kronos_section_cats, true ) <=> array_search( $b->slug, $kronos_section_cats, true );
+		}
+	);
+} else {
+	$kronos_cats = get_categories( [ 'orderby' => 'count', 'order' => 'DESC', 'number' => 4, 'hide_empty' => true ] );
+}
 if ( empty( $kronos_cats ) ) {
 	return;
 }

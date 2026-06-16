@@ -39,6 +39,7 @@ class Options {
 			'kronos_watermark_size'     => 18,
 			'kronos_footer_text'     => '',
 			'kronos_home_blocks'     => 'manset,latest,trending,sections',
+			'kronos_section_cats'    => '',
 			'kronos_ticker'          => true,
 			'kronos_social_x'        => '',
 			'kronos_social_facebook' => '',

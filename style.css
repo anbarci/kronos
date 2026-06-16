@@ -1,12 +1,12 @@
 /*
 Theme Name: Kronos
-Theme URI: https://example.com/kronos
-Author: Hiko
-Author URI: https://example.com
+Theme URI: https://hazermedya.com/kronos
+Author: Hikmet Anbarcı
+Author URI: https://hazermedya.com
 Description: Çok amaçlı, performans öncelikli WordPress blog & haber teması. Native Customizer, dual-mode (blog/haber), otomatik schema, dahili AMP katmanı ve kapsamlı lazy loading ile gelir. Eklenti bağımlılığı yoktur.
-Version: 1.2.0
+Version: 1.2.1
 Requires at least: 6.5
-Tested up to: 6.7
+Tested up to: 7.0
 Requires PHP: 8.2
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -15,4 +15,7 @@ Tags: blog, news, two-columns, custom-logo, custom-menu, featured-images, transl
 
 Bu dosya yalnızca WordPress'in tema başlığını okuması için vardır.
 Asıl stiller derlenebilir biçimde assets/css/ altında tutulur ve enqueue edilir.
+
+Telif hakkı (c) 2026 hazermedya.com - Hikmet Anbarcı. Kod lisansı GPL-2.0-or-later;
+marka adı, tasarım ve "Kronos" ismi hazermedya.com'a aittir. Haklar ve iletişim: https://hazermedya.com
 */
