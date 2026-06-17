@@ -21,7 +21,7 @@ wp_reset_postdata();
 ?>
 <div class="kronos-ticker" aria-label="<?php esc_attr_e( 'Manşetler', 'kronos' ); ?>">
 	<div class="kronos-container kronos-ticker__inner">
-		<span class="kronos-ticker__flash" aria-label="<?php esc_attr_e( 'Son dakika', 'kronos' ); ?>"><?php echo \Kronos\Core\Helpers::icon( 'bolt' ); // phpcs:ignore ?></span>
+		<span class="kronos-ticker__flash" role="img" aria-label="<?php esc_attr_e( 'Son dakika', 'kronos' ); ?>"><?php echo \Kronos\Core\Helpers::icon( 'bolt' ); // phpcs:ignore ?></span>
 		<div class="kronos-ticker__viewport">
 			<div class="kronos-ticker__track">
 				<?php foreach ( $kronos_items as $item ) : ?>

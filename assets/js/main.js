@@ -191,13 +191,20 @@
 	function initProgress() {
 		var bar = document.querySelector('[data-kronos-progress]');
 		if (!bar) return;
+		var ticking = false;
 		var update = function () {
+			ticking = false;
 			var h = document.documentElement;
 			var max = h.scrollHeight - h.clientHeight;
 			var pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
 			bar.style.width = pct + '%';
 		};
-		window.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('scroll', function () {
+			if (!ticking) {
+				ticking = true;
+				window.requestAnimationFrame(update);
+			}
+		}, { passive: true });
 		update();
 	}
 
