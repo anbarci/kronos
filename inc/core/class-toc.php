@@ -73,23 +73,38 @@ class Toc {
 	}
 
 	private function render( array $items ): string {
+		$amp = \Kronos\Amp\Amp::is_request();
 		ob_start();
-		?>
-		<details class="kronos-toc">
-			<summary class="kronos-toc__head">
-				<span class="kronos-toc__icon"><?php echo Helpers::icon( 'list' ); // phpcs:ignore ?></span>
-				<span class="kronos-toc__label"><?php esc_html_e( 'İçindekiler', 'kronos' ); ?></span>
-				<span class="kronos-toc__toggle" aria-hidden="true"><?php echo Helpers::icon( 'plus' ); // phpcs:ignore ?></span>
-			</summary>
-			<nav class="kronos-toc__nav" aria-label="<?php esc_attr_e( 'İçindekiler', 'kronos' ); ?>">
+		if ( $amp ) :
+			$permalink = get_permalink();
+			?>
+			<nav class="kronos-toc kronos-toc--amp" aria-label="<?php esc_attr_e( 'İçindekiler', 'kronos' ); ?>">
+				<span class="kronos-toc__amplabel"><?php esc_html_e( 'İçindekiler', 'kronos' ); ?></span>
 				<ol class="kronos-toc__list">
 					<?php foreach ( $items as $item ) : ?>
-						<li class="kronos-toc__item kronos-toc__item--h<?php echo (int) $item['level']; ?>"><a href="#<?php echo esc_attr( $item['id'] ); ?>"><?php echo esc_html( $item['text'] ); ?></a></li>
+						<li class="kronos-toc__item kronos-toc__item--h<?php echo (int) $item['level']; ?>"><a href="<?php echo esc_url( $permalink . '#' . $item['id'] ); ?>"><?php echo esc_html( $item['text'] ); ?></a></li>
 					<?php endforeach; ?>
 				</ol>
 			</nav>
-		</details>
-		<?php
+			<?php
+		else :
+			?>
+			<details class="kronos-toc">
+				<summary class="kronos-toc__head">
+					<span class="kronos-toc__icon"><?php echo Helpers::icon( 'list' ); // phpcs:ignore ?></span>
+					<span class="kronos-toc__label"><?php esc_html_e( 'İçindekiler', 'kronos' ); ?></span>
+					<span class="kronos-toc__toggle" aria-hidden="true"><?php echo Helpers::icon( 'plus' ); // phpcs:ignore ?></span>
+				</summary>
+				<nav class="kronos-toc__nav" aria-label="<?php esc_attr_e( 'İçindekiler', 'kronos' ); ?>">
+					<ol class="kronos-toc__list">
+						<?php foreach ( $items as $item ) : ?>
+							<li class="kronos-toc__item kronos-toc__item--h<?php echo (int) $item['level']; ?>"><a href="#<?php echo esc_attr( $item['id'] ); ?>"><?php echo esc_html( $item['text'] ); ?></a></li>
+						<?php endforeach; ?>
+					</ol>
+				</nav>
+			</details>
+			<?php
+		endif;
 		return (string) ob_get_clean();
 	}
 }

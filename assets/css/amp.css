@@ -13,3 +13,11 @@ h1{font-size:1.75rem;line-height:1.25;margin:0 0 8px}
 .amp-readmore__hint{color:#64748B;font-size:.9rem;margin:0 0 14px}
 .amp-readmore__btn{display:inline-block;background:#E11D48;color:#fff;padding:14px 32px;border-radius:999px;font-weight:700;text-decoration:none}
 a{color:#E11D48}
+.kronos-toc--amp{display:block;margin:24px 0;background:#F8F9FB;border:1px solid #E2E8F0;border-radius:10px;padding:14px 18px}
+.kronos-toc__amplabel{display:block;font-weight:700;text-transform:uppercase;letter-spacing:.07em;font-size:.78rem;color:#475569;margin:0 0 8px}
+.kronos-toc__list{list-style:none;margin:0;padding:0;counter-reset:ktoc}
+.kronos-toc__item{margin:0}
+.kronos-toc__item a{display:block;padding:7px 0;color:#334155;text-decoration:none;font-size:.95rem;border-bottom:1px solid #EDF0F4}
+.kronos-toc__item--h2{counter-increment:ktoc}
+.kronos-toc__item--h2 a::before{content:counter(ktoc) ". ";color:#E11D48;font-weight:700}
+.kronos-toc__item--h3 a{padding-left:18px;color:#64748B;font-size:.875rem}
