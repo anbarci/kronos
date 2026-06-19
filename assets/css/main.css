@@ -396,6 +396,13 @@ html[data-theme="dark"] .kronos-share__btn--x:hover { background: var(--text-pri
 .kronos-ai:hover { border-color: var(--ai, var(--brand-primary)); background: color-mix(in srgb, var(--ai, var(--brand-primary)) 8%, var(--bg-card)); color: var(--ai, var(--brand-primary)); transform: translateY(-2px); }
 .kronos-ai__icon { display: inline-flex; color: var(--ai, var(--brand-primary)); }
 .kronos-ai__icon svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; }
+.kronos-ai { flex-wrap: wrap; }
+.kronos-ai__name { flex: 1; }
+.kronos-ai__tag { flex-basis: 100%; margin-left: 25px; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.01em; color: var(--text-muted); }
+.kronos-ai:hover .kronos-ai__tag { color: inherit; }
+.kronos-ai-note { margin: var(--sp-4) 0 0; font-size: var(--fs-xs); line-height: 1.55; color: var(--text-muted); }
+.kronos-toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 12px); z-index: 400; max-width: min(92vw, 440px); padding: 12px 20px; background: var(--text-primary); color: var(--bg-base); border-radius: 999px; font-size: var(--fs-sm); font-weight: 600; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.28); opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; }
+.kronos-toast.is-on { opacity: 1; transform: translate(-50%, 0); }
 
 :is(h2, h3)[id] { scroll-margin-top: 90px; }
 .kronos-toc { margin: var(--sp-8) 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }

@@ -46,14 +46,20 @@ defined( 'ABSPATH' ) || exit;
 		'pinterest' => [ 'Pinterest', '#E60023', 'https://pinterest.com/pin/create/button/?url=' . $kronos_url . '&media=' . $kronos_img . '&description=' . $kronos_title ],
 		'email'     => [ __( 'E-posta', 'kronos' ), '#64748B', 'mailto:?subject=' . $kronos_title . '&body=' . $kronos_url ],
 	];
-	$kronos_prompt = rawurlencode( __( 'Bu yazıyı özetle ve en önemli noktalarını madde madde çıkar:', 'kronos' ) . ' ' . get_permalink() );
-	$kronos_ai     = [
-		'ChatGPT'    => [ '#10A37F', 'https://chatgpt.com/?q=' . $kronos_prompt ],
-		'Claude'     => [ '#D97757', 'https://claude.ai/new?q=' . $kronos_prompt ],
-		'Perplexity' => [ '#20808D', 'https://www.perplexity.ai/search?q=' . $kronos_prompt ],
-		'Gemini'     => [ '#4285F4', 'https://gemini.google.com/app?q=' . $kronos_prompt ],
-		'Grok'       => [ '#111111', 'https://grok.com/?q=' . $kronos_prompt ],
-		'Copilot'    => [ '#0A6CFF', 'https://copilot.microsoft.com/?q=' . $kronos_prompt ],
+	$kronos_ask = __( 'Bu yazıyı özetle ve en önemli noktalarını madde madde çıkar:', 'kronos' ) . ' ' . get_permalink();
+	$kronos_q   = rawurlencode( $kronos_ask );
+	// Her servis URL'den prompt almıyor. Güvenlik açıkları (Reprompt vb.) nedeniyle
+	// Claude (2025-10), Copilot (2026-01) URL-prefill'i kaldırdı; Gemini hiç desteklemedi;
+	// Grok'ta da güvenilir bir parametre yok. Bu yüzden iki mod:
+	//   'url'  => prompt bağlantıyla gider (ChatGPT, Perplexity) — tek tık, otomatik gönderim.
+	//   'copy' => prompt panoya kopyalanır + sohbet sayfası açılır, kullanıcı yapıştırır.
+	$kronos_ai = [
+		'ChatGPT'    => [ '#10A37F', 'url',  'https://chatgpt.com/?q=' . $kronos_q ],
+		'Perplexity' => [ '#20808D', 'url',  'https://www.perplexity.ai/search?q=' . $kronos_q ],
+		'Claude'     => [ '#D97757', 'copy', 'https://claude.ai/new' ],
+		'Gemini'     => [ '#4285F4', 'copy', 'https://gemini.google.com/app' ],
+		'Grok'       => [ '#111111', 'copy', 'https://grok.com/' ],
+		'Copilot'    => [ '#0A6CFF', 'copy', 'https://copilot.microsoft.com/' ],
 	];
 	?>
 	<div class="kronos-actions">
@@ -85,12 +91,15 @@ defined( 'ABSPATH' ) || exit;
 			<p class="kronos-modal__desc"><?php esc_html_e( 'Bu yazının özetini veya analizini seçtiğin yapay zekadan al.', 'kronos' ); ?></p>
 			<div class="kronos-ai-list">
 				<?php foreach ( $kronos_ai as $kronos_ai_name => $kronos_ai_p ) : ?>
-					<a class="kronos-ai" style="--ai: <?php echo esc_attr( $kronos_ai_p[0] ); ?>" href="<?php echo esc_url( $kronos_ai_p[1] ); ?>" target="_blank" rel="noopener nofollow">
-						<span class="kronos-ai__icon"><?php echo \Kronos\Core\Helpers::icon( 'sparkle' ); // phpcs:ignore ?></span>
+					<?php $kronos_ai_copy = ( 'copy' === $kronos_ai_p[1] ); ?>
+					<a class="kronos-ai<?php echo $kronos_ai_copy ? ' kronos-ai--copy' : ''; ?>" style="--ai: <?php echo esc_attr( $kronos_ai_p[0] ); ?>" href="<?php echo esc_url( $kronos_ai_p[2] ); ?>" target="_blank" rel="noopener nofollow"<?php echo $kronos_ai_copy ? ' data-kronos-ai-copy="' . esc_attr( $kronos_ask ) . '"' : ''; ?>>
+						<span class="kronos-ai__icon"><?php echo \Kronos\Core\Helpers::icon( $kronos_ai_copy ? 'copy' : 'sparkle' ); // phpcs:ignore ?></span>
 						<span class="kronos-ai__name"><?php echo esc_html( $kronos_ai_name ); ?></span>
+						<?php if ( $kronos_ai_copy ) : ?><span class="kronos-ai__tag"><?php esc_html_e( 'kopyala &amp; aç', 'kronos' ); ?></span><?php endif; ?>
 					</a>
 				<?php endforeach; ?>
 			</div>
+			<p class="kronos-ai-note"><?php esc_html_e( '“Kopyala &amp; aç” işaretli yapay zekalar bağlantıdan soru almıyor; tıklayınca soru panoya kopyalanır, açılan sohbete yapıştırın (Ctrl/⌘+V).', 'kronos' ); ?></p>
 		</div>
 	</div>
 

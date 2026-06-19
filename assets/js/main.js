@@ -59,6 +59,19 @@
 		if (any) document.body.classList.remove('kronos-nav-open');
 	}
 
+	function showToast(msg) {
+		var t = document.createElement('div');
+		t.className = 'kronos-toast';
+		t.setAttribute('role', 'status');
+		t.textContent = msg;
+		document.body.appendChild(t);
+		requestAnimationFrame(function () { t.classList.add('is-on'); });
+		setTimeout(function () {
+			t.classList.remove('is-on');
+			setTimeout(function () { if (t.parentNode) { t.parentNode.removeChild(t); } }, 320);
+		}, 3200);
+	}
+
 	document.addEventListener('click', function (event) {
 		if (event.target.closest('[data-kronos-theme-toggle]')) {
 			event.preventDefault();
@@ -145,6 +158,23 @@
 				try { document.execCommand('copy'); } catch (e) {}
 				document.body.removeChild(t); done();
 			}
+			return;
+		}
+		var aiCopy = event.target.closest('[data-kronos-ai-copy]');
+		if (aiCopy) {
+			// Bu servisler bağlantıdan prompt almıyor: soruyu panoya kopyala,
+			// link normal şekilde yeni sekmede açılsın (preventDefault YOK).
+			var ask = aiCopy.getAttribute('data-kronos-ai-copy') || '';
+			if (navigator.clipboard && navigator.clipboard.writeText) {
+				navigator.clipboard.writeText(ask).catch(function () {});
+			} else {
+				var ta = document.createElement('textarea');
+				ta.value = ask; ta.style.position = 'fixed'; ta.style.opacity = '0';
+				document.body.appendChild(ta); ta.select();
+				try { document.execCommand('copy'); } catch (e) {}
+				document.body.removeChild(ta);
+			}
+			showToast('Soru panoya kopyalandı — açılan sohbete yapıştırın (Ctrl/⌘+V)');
 			return;
 		}
 		var feedBtn = event.target.closest('[data-kronos-feed-prev], [data-kronos-feed-next]');
