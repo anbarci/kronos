@@ -80,20 +80,20 @@ class Customizer {
 			'title' => __( 'Tipografi', 'kronos' ),
 			'panel' => 'kronos_panel',
 		] );
-		$fonts = [ 'Space Grotesk', 'Inter', 'Sora', 'IBM Plex Sans', 'Roboto', 'system-ui' ];
+		$fonts = \Kronos\Core\Options::fonts();
 		foreach ( [
 			'kronos_font_head' => __( 'Başlık fontu', 'kronos' ),
 			'kronos_font_body' => __( 'Metin fontu', 'kronos' ),
 		] as $id => $label ) {
 			$wp->add_setting( $id, [
 				'default'           => $defaults[ $id ],
-				'sanitize_callback' => 'sanitize_text_field',
+				'sanitize_callback' => static fn( $v ) => array_key_exists( (string) $v, $fonts ) ? (string) $v : $defaults[ $id ],
 			] );
 			$wp->add_control( $id, [
 				'type'    => 'select',
 				'section' => 'kronos_typography',
 				'label'   => $label,
-				'choices' => array_combine( $fonts, $fonts ),
+				'choices' => $fonts,
 			] );
 		}
 
