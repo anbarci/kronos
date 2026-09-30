@@ -31,7 +31,7 @@ class Panel {
 	}
 
 	private function groups(): array {
-		$fonts = [ 'Space Grotesk' => 'Space Grotesk', 'Inter' => 'Inter', 'Sora' => 'Sora', 'IBM Plex Sans' => 'IBM Plex Sans', 'Roboto' => 'Roboto', 'system-ui' => 'Sistem' ];
+		$fonts = Options::fonts();
 
 		return [
 			'genel'      => [

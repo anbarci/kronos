@@ -49,6 +49,14 @@ class Options {
 		];
 	}
 
+	/**
+	 * Seçilebilir yazı tipleri. Yalnızca assets/fonts altında dosyası olanlar
+	 * listelenir; paketlenmemiş bir font seçilirse sessizce sistem fontuna düşülüyordu.
+	 */
+	public static function fonts(): array {
+		return [ 'Space Grotesk' => 'Space Grotesk', 'Inter' => 'Inter', 'system-ui' => __( 'Sistem', 'kronos' ) ];
+	}
+
 	public static function get( string $key ) {
 		$defaults = self::defaults();
 		$default  = $defaults[ $key ] ?? '';

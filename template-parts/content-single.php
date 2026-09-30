@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 <div class="kronos-reading-progress" data-kronos-progress aria-hidden="true"></div>
-<article <?php post_class( 'kronos-single' ); ?> itemscope itemtype="https://schema.org/Article">
+<article <?php post_class( 'kronos-single' ); ?>>
 	<?php get_template_part( 'template-parts/breadcrumbs' ); ?>
 
 	<header class="kronos-single__header">
@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 			<div class="kronos-single__cats"><?php echo wp_kses_post( $kronos_cats ); ?></div>
 		<?php endif; ?>
 
-		<h1 class="kronos-single__title" itemprop="headline"><?php the_title(); ?></h1>
+		<h1 class="kronos-single__title"><?php the_title(); ?></h1>
 
 		<?php get_template_part( 'template-parts/entry-meta' ); ?>
 	</header>
@@ -26,7 +26,6 @@ defined( 'ABSPATH' ) || exit;
 				'class'         => 'kronos-single__img',
 				'loading'       => 'eager',
 				'fetchpriority' => 'high',
-				'itemprop'      => 'image',
 			] );
 			?>
 		</figure>
@@ -103,7 +102,7 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</div>
 
-	<div class="kronos-single__content" itemprop="articleBody">
+	<div class="kronos-single__content">
 		<?php
 		the_content();
 		wp_link_pages( [

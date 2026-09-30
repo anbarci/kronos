@@ -337,7 +337,12 @@ body.kronos-nav-open { overflow: hidden; }
 .kronos-newsletter__inner { display: flex; flex-wrap: wrap; gap: var(--sp-6); align-items: center; justify-content: space-between; padding: var(--sp-10) 0; }
 .kronos-newsletter__title { color: #fff; }
 .kronos-newsletter__text p { color: #c7cdd9; margin: 0; }
-.kronos-newsletter__form { display: flex; gap: var(--sp-2); }
+.kronos-newsletter__form { display: flex; flex-wrap: wrap; gap: var(--sp-2); max-width: 520px; }
+.kronos-newsletter__consent { flex-basis: 100%; display: flex; gap: var(--sp-2); align-items: flex-start; font-size: .8125rem; line-height: 1.45; color: #c7cdd9; }
+.kronos-newsletter__form .kronos-newsletter__consent input { min-width: 0; padding: 0; margin-top: 3px; flex: none; }
+.kronos-newsletter__consent a { color: #fff; text-decoration: underline; }
+.kronos-newsletter__status { color: #fff; font-weight: 600; margin-top: var(--sp-2); }
+.kronos-newsletter__hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .kronos-newsletter__form input { padding: var(--sp-3) var(--sp-4); border: 0; border-radius: var(--radius-pill); min-width: 260px; }
 
 /* single */

@@ -7,15 +7,12 @@ defined( 'ABSPATH' ) || exit;
 class DynamicCss {
 
 	public function register(): void {
-		add_action( 'wp_head', [ $this, 'output' ], 20 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'inline' ], 20 );
 	}
 
 	public function inline(): void {
 		wp_add_inline_style( 'kronos-main', $this->build() );
 	}
-
-	public function output(): void {}
 
 	private function build(): string {
 		$primary   = sanitize_hex_color( (string) Options::get( 'kronos_brand_primary' ) ) ?: '#E11D48';
@@ -25,8 +22,8 @@ class DynamicCss {
 		$text      = sanitize_hex_color( (string) Options::get( 'kronos_text_primary' ) ) ?: '#0F172A';
 		$max       = absint( Options::get( 'kronos_container_max' ) ) ?: 1200;
 		$radius    = absint( Options::get( 'kronos_radius' ) );
-		$fontBody  = sanitize_text_field( (string) Options::get( 'kronos_font_body' ) );
-		$fontHead  = sanitize_text_field( (string) Options::get( 'kronos_font_head' ) );
+		$fontBody  = $this->font_stack( (string) Options::get( 'kronos_font_body' ), 'kronos_font_body' );
+		$fontHead  = $this->font_stack( (string) Options::get( 'kronos_font_head' ), 'kronos_font_head' );
 
 		$css  = ':root{';
 		$css .= '--brand-primary:' . $primary . ';';
@@ -35,10 +32,10 @@ class DynamicCss {
 		$css .= '--container-max:' . $max . 'px;';
 		$css .= '--radius:' . $radius . 'px;';
 		if ( $fontBody ) {
-			$css .= '--font-body:"' . $fontBody . '",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;';
+			$css .= '--font-body:' . $fontBody . ',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;';
 		}
 		if ( $fontHead ) {
-			$css .= '--font-head:"' . $fontHead . '",var(--font-body);';
+			$css .= '--font-head:' . $fontHead . ',var(--font-body);';
 		}
 		$css .= '}';
 
@@ -53,5 +50,17 @@ class DynamicCss {
 		}
 
 		return wp_strip_all_tags( $css );
+	}
+
+	/**
+	 * Seçili fontu CSS değerine çevirir. Paketlenmemiş/eski bir değer varsayılana
+	 * düşer; "system-ui" genel aile anahtar sözcüğü olduğundan tırnaksız yazılır.
+	 */
+	private function font_stack( string $font, string $key ): string {
+		$fonts = Options::fonts();
+		if ( ! array_key_exists( $font, $fonts ) ) {
+			$font = (string) ( Options::defaults()[ $key ] ?? 'system-ui' );
+		}
+		return 'system-ui' === $font ? 'system-ui' : '"' . $font . '"';
 	}
 }

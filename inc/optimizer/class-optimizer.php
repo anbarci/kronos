@@ -8,7 +8,6 @@ class Optimizer {
 
 	public function register(): void {
 		add_action( 'init', [ $this, 'cleanup' ] );
-		add_filter( 'wp_resource_hints', [ $this, 'resource_hints' ], 10, 2 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'dequeue' ], 100 );
 		add_filter( 'wp_editor_set_quality', [ $this, 'image_quality' ], 10, 2 );
 		add_action( 'wp_head', [ $this, 'preload_lcp' ], 2 );
@@ -23,10 +22,6 @@ class Optimizer {
 		remove_action( 'wp_head', 'wlwmanifest_link' );
 		remove_action( 'wp_head', 'rsd_link' );
 		add_filter( 'the_generator', '__return_empty_string' );
-	}
-
-	public function resource_hints( array $hints, string $relation ): array {
-		return $hints;
 	}
 
 	public function dequeue(): void {

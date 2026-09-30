@@ -7,6 +7,10 @@ defined( 'ABSPATH' ) || exit;
 class Head {
 
 	public function register(): void {
+		// ?replytocom=N her yorum için yazının kopya bir URL'sini üretir; Google bunları
+		// ayrı sayfa olarak tarar. Yanıtla düğmesi zaten JS ile çalışır, href'e gerek yok.
+		add_filter( 'comment_reply_link', [ $this, 'reply_link' ] );
+
 		if ( $this->seo_plugin_active() ) {
 			return;
 		}
@@ -15,7 +19,7 @@ class Head {
 	}
 
 	public function robots( $robots ) {
-		if ( is_search() || is_404() ) {
+		if ( $this->should_noindex() ) {
 			$robots['noindex'] = true;
 			$robots['follow']  = true;
 		}
@@ -23,7 +27,7 @@ class Head {
 	}
 
 	private function seo_plugin_active(): bool {
-		return defined( 'WPSEO_VERSION' ) || defined( 'RANK_MATH_VERSION' ) || class_exists( 'SEOPress' );
+		return \Kronos\Core\Helpers::seo_plugin_active();
 	}
 
 	private function description(): string {
@@ -31,16 +35,65 @@ class Head {
 			$excerpt = get_the_excerpt();
 			return $excerpt ? wp_strip_all_tags( $excerpt ) : '';
 		}
+		// Liste sayfaları kendine özgü açıklama alsın (eskiden hepsi site sloganıydı).
 		if ( is_category() || is_tag() || is_tax() ) {
-			return wp_strip_all_tags( (string) term_description() );
+			$desc = wp_strip_all_tags( (string) term_description() );
+			if ( '' === trim( $desc ) ) {
+				/* translators: 1: term name, 2: site name. */
+				$desc = sprintf( __( '%1$s ile ilgili yazılar – %2$s', 'kronos' ), single_term_title( '', false ), get_bloginfo( 'name' ) );
+			}
+			return $this->paged( $desc );
 		}
-		return get_bloginfo( 'description' );
+		if ( is_author() ) {
+			$author = get_queried_object();
+			if ( ! $author instanceof \WP_User ) {
+				return '';
+			}
+			$bio = trim( wp_strip_all_tags( (string) $author->description ) );
+			/* translators: 1: author name, 2: site name. */
+			return $this->paged( '' !== $bio ? $bio : sprintf( __( '%1$s tarafından yazılan yazılar – %2$s', 'kronos' ), $author->display_name, get_bloginfo( 'name' ) ) );
+		}
+		if ( is_front_page() || is_home() ) {
+			return $this->paged( get_bloginfo( 'description' ) );
+		}
+		return '';
+	}
+
+	/**
+	 * Arama, 404, ?replytocom kopyaları ve tarih arşivleri (/2026/09/ anasayfa ile
+	 * kategorilerin tekrarıdır). Tarih arşivini açmak için: kronos_noindex_date → false.
+	 */
+	private function should_noindex(): bool {
+		if ( is_date() ) {
+			return (bool) apply_filters( 'kronos_noindex_date', true );
+		}
+		return is_search() || is_404() || isset( $_GET['replytocom'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	}
+
+	/**
+	 * 2. ve sonraki liste sayfalarına sayfa numarası ekle (kopya açıklama olmasın).
+	 */
+	private function paged( string $desc ): string {
+		$page = max( (int) get_query_var( 'paged' ), (int) get_query_var( 'page' ) );
+		if ( '' === trim( $desc ) || $page < 2 ) {
+			return $desc;
+		}
+		/* translators: 1: description, 2: page number. */
+		return sprintf( __( '%1$s (Sayfa %2$d)', 'kronos' ), $desc, $page );
+	}
+
+	/**
+	 * Yanıtla bağlantısındaki ?replytocom=N parametresini kaldır.
+	 */
+	public function reply_link( $link ) {
+		return (string) preg_replace( '#href=([\'"])[^\'"]*\?replytocom=\d+\#respond\1#', 'href=$1#respond$1', (string) $link );
 	}
 
 	public function output(): void {
-		$desc  = mb_substr( trim( $this->description() ), 0, 160 );
+		$noindex = $this->should_noindex();
+		$desc    = $noindex ? '' : mb_substr( trim( $this->description() ), 0, 160 );
 		$title = wp_get_document_title();
-		$url   = is_singular() ? get_permalink() : home_url( add_query_arg( [] ) );
+		$url   = is_singular() ? ( wp_get_canonical_url() ?: get_permalink() ) : \Kronos\Core\Helpers::current_url();
 		$image     = '';
 		$image_w   = 0;
 		$image_h   = 0;
@@ -99,6 +152,10 @@ class Head {
 		}
 
 		$out = "\n";
+		// Çekirdek rel=canonical'ı yalnız tekil sayfalara basar; liste sayfaları da alsın.
+		if ( ! is_singular() && ! $noindex ) {
+			$out .= '<link rel="canonical" href="' . esc_url( $url ) . '" />' . "\n";
+		}
 		foreach ( $tags as $tag ) {
 			$attr = isset( $tag['property'] ) ? 'property' : 'name';
 			$key  = $tag['property'] ?? $tag['name'];
