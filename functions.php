@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'KRONOS_VERSION', '1.2.6' );
+define( 'KRONOS_VERSION', '1.2.7' );
 define( 'KRONOS_DIR', get_template_directory() );
 define( 'KRONOS_URI', get_template_directory_uri() );
 
